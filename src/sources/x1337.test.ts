@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { parseUploadDate } from "./x1337";
+import { parseUploadDate, x1337Games, x1337Music, x1337Software } from "./x1337";
 
 const detail = (span: string) =>
   `<ul class="list"><li><strong>Date uploaded</strong><span>${span}</span> </li></ul>`;
@@ -19,5 +19,18 @@ describe("parseUploadDate", () => {
   it("returns undefined when the field is missing or unparseable", () => {
     expect(parseUploadDate("<div>no date here</div>")).toBeUndefined();
     expect(parseUploadDate(detail("sometime"))).toBeUndefined();
+  });
+});
+
+describe("1337x category sources", () => {
+  it("scopes each source to its category group", () => {
+    expect(x1337Music.groups).toEqual(["Music"]);
+    expect(x1337Software.groups).toEqual(["Software"]);
+    expect(x1337Games.groups).toEqual(["Games"]);
+  });
+
+  it("returns nothing for an empty browse on categories with no listing page", async () => {
+    expect(await x1337Music.search("")).toEqual([]);
+    expect(await x1337Games.search("")).toEqual([]);
   });
 });

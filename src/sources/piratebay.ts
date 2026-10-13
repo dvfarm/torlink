@@ -10,6 +10,16 @@ const TV_CATS = new Set([205, 208]);
 const TOP_MOVIES = `${API}/precompiled/data_top100_207.json`;
 const TOP_TV = `${API}/precompiled/data_top100_208.json`;
 
+const MUSIC_CATS = new Set([101, 102, 103, 104]);
+const BOOKS_CATS = new Set([601, 602, 603]);
+const SOFTWARE_CATS = new Set([300, 301, 302, 303, 304]);
+const GAMES_CATS = new Set([400, 401, 402, 403, 404, 405, 406, 407, 408]);
+
+const TOP_MUSIC = `${API}/precompiled/data_top100_100.json`;
+const TOP_BOOKS = `${API}/precompiled/data_top100_601.json`;
+const TOP_SOFTWARE = `${API}/precompiled/data_top100_300.json`;
+const TOP_GAMES = `${API}/precompiled/data_top100_400.json`;
+
 interface ApibayItem {
   id?: string;
   name?: string;
@@ -102,4 +112,40 @@ export const tpbTv: Source = {
   homepage: "https://thepiratebay.org",
   reportsHealth: true,
   search: (query, opts = {}) => search(query, TV_CATS, TOP_TV, "tpb-tv", opts),
+};
+
+export const tpbMusic: Source = {
+  id: "tpb-music",
+  label: "TPB",
+  groups: ["Music"],
+  homepage: "https://thepiratebay.org",
+  reportsHealth: true,
+  search: (query, opts = {}) => search(query, MUSIC_CATS, TOP_MUSIC, "tpb-music", opts),
+};
+
+export const tpbBooks: Source = {
+  id: "tpb-books",
+  label: "TPB",
+  groups: ["Books"],
+  homepage: "https://thepiratebay.org",
+  reportsHealth: true,
+  search: (query, opts = {}) => search(query, BOOKS_CATS, TOP_BOOKS, "tpb-books", opts),
+};
+
+export const tpbSoftware: Source = {
+  id: "tpb-software",
+  label: "TPB",
+  groups: ["Software"],
+  homepage: "https://thepiratebay.org",
+  reportsHealth: true,
+  search: (query, opts = {}) => search(query, SOFTWARE_CATS, TOP_SOFTWARE, "tpb-software", opts),
+};
+
+export const tpbGames: Source = {
+  id: "tpb-games",
+  label: "TPB",
+  groups: ["Games"],
+  homepage: "https://thepiratebay.org",
+  reportsHealth: true,
+  search: (query, opts = {}) => search(query, GAMES_CATS, TOP_GAMES, "tpb-games", opts),
 };

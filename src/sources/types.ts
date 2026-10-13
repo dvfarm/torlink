@@ -6,11 +6,20 @@ export type SourceId =
   | "subsplease"
   | "tpb-movies"
   | "tpb-tv"
+  | "tpb-music"
+  | "tpb-books"
+  | "tpb-software"
+  | "tpb-games"
   | "x1337-movies"
   | "x1337-tv"
+  | "x1337-music"
+  | "x1337-software"
+  | "x1337-games"
+  | "nyaa-audio"
+  | "nyaa-software"
   | "bittorrented";
 
-export type SourceGroup = "Games" | "Movies" | "TV" | "Anime";
+export type SourceGroup = "Games" | "Movies" | "TV" | "Anime" | "Music" | "Books" | "Software";
 
 export interface TorrentResult {
   infoHash: string;

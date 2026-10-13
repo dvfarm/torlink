@@ -68,6 +68,21 @@ describe("parseCliArgs", () => {
       query: "ubuntu",
       category: "games",
     });
+    expect(parseCliArgs(["search", "ubuntu", "--category", "music"])).toEqual({
+      kind: "search",
+      query: "ubuntu",
+      category: "music",
+    });
+    expect(parseCliArgs(["search", "ubuntu", "--category", "books"])).toEqual({
+      kind: "search",
+      query: "ubuntu",
+      category: "books",
+    });
+    expect(parseCliArgs(["search", "ubuntu", "--category", "software"])).toEqual({
+      kind: "search",
+      query: "ubuntu",
+      category: "software",
+    });
   });
   it("parses a headless search --timeout in the --seed-time grammar", () => {
     expect(parseCliArgs(["search", "ubuntu", "--timeout", "30s"])).toEqual({
@@ -108,9 +123,9 @@ describe("parseCliArgs", () => {
   });
   it("rejects invalid headless searches", () => {
     expect(parseCliArgs(["search"])).toEqual({ kind: "invalid", arg: "search (missing query)" });
-    expect(parseCliArgs(["search", "ubuntu", "--category", "books"])).toEqual({
+    expect(parseCliArgs(["search", "ubuntu", "--category", "ebooks"])).toEqual({
       kind: "invalid",
-      arg: "search (invalid category 'books')",
+      arg: "search (invalid category 'ebooks')",
     });
     expect(parseCliArgs(["search", "ubuntu", "--limit", "10"])).toEqual({
       kind: "invalid",

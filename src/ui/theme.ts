@@ -36,8 +36,17 @@ export const SOURCE_STYLE: Record<SourceId, { tag: string; color: string }> = {
   subsplease: { tag: "SUB", color: "#b9a7e6" },
   "tpb-movies": { tag: "TPB", color: "#5fd0c5" },
   "tpb-tv": { tag: "TPB", color: "#5fd0c5" },
+  "tpb-music": { tag: "TPB", color: "#5fd0c5" },
+  "tpb-books": { tag: "TPB", color: "#5fd0c5" },
+  "tpb-software": { tag: "TPB", color: "#5fd0c5" },
+  "tpb-games": { tag: "TPB", color: "#5fd0c5" },
   "x1337-movies": { tag: "1337", color: "#f6a55c" },
   "x1337-tv": { tag: "1337", color: "#f6a55c" },
+  "x1337-music": { tag: "1337", color: "#f6a55c" },
+  "x1337-software": { tag: "1337", color: "#f6a55c" },
+  "x1337-games": { tag: "1337", color: "#f6a55c" },
+  "nyaa-audio": { tag: "NYAA", color: COLOR.bright },
+  "nyaa-software": { tag: "NYAA", color: COLOR.bright },
   bittorrented: { tag: "BT", color: "#7db8f0" },
 };
 

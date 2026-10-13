@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { tpbMovies } from "./piratebay";
+import { tpbBooks, tpbGames, tpbMovies, tpbMusic, tpbSoftware } from "./piratebay";
 import { fetchResilient } from "../util/net";
 
 vi.mock("../util/net", async (importOriginal) => {
@@ -71,5 +71,29 @@ describe("apibay sentinel retry", () => {
     await tpbMovies.search("");
     expect(mockFetch).toHaveBeenCalledTimes(1);
     expect(askedUrl(0)).toContain("/precompiled/");
+  });
+});
+
+
+describe("TPB category sources", () => {
+  it("scopes each source to its category group", () => {
+    expect(tpbMusic.groups).toEqual(["Music"]);
+    expect(tpbBooks.groups).toEqual(["Books"]);
+    expect(tpbSoftware.groups).toEqual(["Software"]);
+    expect(tpbGames.groups).toEqual(["Games"]);
+  });
+
+  it("keeps only rows in the source's category set when searching", async () => {
+    const musicRow = { ...movieRow, id: "2", info_hash: "b".repeat(40), name: "Album", category: "101" };
+    const softwareRow = { ...movieRow, id: "3", info_hash: "c".repeat(40), name: "App", category: "301" };
+    mockFetch.mockResolvedValueOnce(page([movieRow, musicRow, softwareRow]));
+    const results = await tpbMusic.search("test");
+    expect(results.map((r) => r.name)).toEqual([musicRow.name]);
+  });
+
+  it("browses the precompiled feed scoped to the source's category", async () => {
+    mockFetch.mockResolvedValueOnce(page([movieRow]));
+    await tpbBooks.search("");
+    expect(askedUrl(0)).toBe("https://apibay.org/precompiled/data_top100_601.json");
   });
 });

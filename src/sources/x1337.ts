@@ -2,7 +2,7 @@ import { fetchResilient, HttpError, USER_AGENT } from "../util/net";
 import { unescapeEntities } from "./rss";
 import { parseSize } from "../util/format";
 import { normalizeInfoHash } from "./magnet";
-import type { SearchOptions, Source, SourceId, TorrentResult } from "./types";
+import type { SearchOptions, Source, SourceGroup, SourceId, TorrentResult } from "./types";
 
 const HOSTS = ["1337x.to", "1337x.st", "x1337x.ws", "1337xx.to"];
 let workingHostIndex = 0;
@@ -80,16 +80,25 @@ async function detailInfo(
   }
 }
 
+interface X1337Category {
+  // The path segment 1337x uses for its category-scoped search.
+  segment: string;
+  // Listing page used when the query is empty; null when the category has no
+  // verified listing, so an empty browse returns nothing rather than erroring.
+  browse: string | null;
+}
+
 async function search(
   query: string,
-  cat: "Movies" | "TV",
+  cat: X1337Category,
   source: SourceId,
   opts: SearchOptions = {},
 ): Promise<TorrentResult[]> {
   const q = query.trim();
   const path = q
-    ? `/category-search/${encodeURIComponent(q).replace(/%20/g, "+")}/${cat}/1/`
-    : `/popular-${cat === "Movies" ? "movies" : "tv"}`;
+    ? `/category-search/${encodeURIComponent(q).replace(/%20/g, "+")}/${cat.segment}/1/`
+    : cat.browse;
+  if (!path) return [];
 
   let base = "";
   let html = "";
@@ -143,20 +152,22 @@ async function search(
   return settled.filter((r): r is TorrentResult => r !== null);
 }
 
-export const x1337Movies: Source = {
-  id: "x1337-movies",
+const make1337 = (
+  id: SourceId,
+  groups: readonly SourceGroup[],
+  segment: string,
+  browse: string | null,
+): Source => ({
+  id,
   label: "1337x",
-  groups: ["Movies"],
+  groups,
   homepage: "https://1337x.to",
   reportsHealth: true,
-  search: (query, opts = {}) => search(query, "Movies", "x1337-movies", opts),
-};
+  search: (query, opts = {}) => search(query, { segment, browse }, id, opts),
+});
 
-export const x1337Tv: Source = {
-  id: "x1337-tv",
-  label: "1337x",
-  groups: ["TV"],
-  homepage: "https://1337x.to",
-  reportsHealth: true,
-  search: (query, opts = {}) => search(query, "TV", "x1337-tv", opts),
-};
+export const x1337Movies = make1337("x1337-movies", ["Movies"], "Movies", "/popular-movies");
+export const x1337Tv = make1337("x1337-tv", ["TV"], "TV", "/popular-tv");
+export const x1337Music = make1337("x1337-music", ["Music"], "Music", null);
+export const x1337Software = make1337("x1337-software", ["Software"], "Apps", null);
+export const x1337Games = make1337("x1337-games", ["Games"], "Games", null);

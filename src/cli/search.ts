@@ -33,6 +33,9 @@ const GROUPS: Record<SearchCategory, SourceGroup> = {
   movies: "Movies",
   tv: "TV",
   anime: "Anime",
+  music: "Music",
+  books: "Books",
+  software: "Software",
 };
 
 function selectSources(category: OutputCategory): readonly Source[] {

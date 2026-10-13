@@ -1,7 +1,7 @@
 import { isInfoHash } from "../sources/magnet";
 import { parseDuration } from "../util/duration";
 
-export type SearchCategory = "games" | "movies" | "tv" | "anime";
+export type SearchCategory = "games" | "movies" | "tv" | "anime" | "music" | "books" | "software";
 
 export type CliCommand =
   | { kind: "version" }
@@ -125,7 +125,10 @@ function parseCommand(argv: string[]): CliCommand {
       category === "games" ||
       category === "movies" ||
       category === "tv" ||
-      category === "anime"
+      category === "anime" ||
+      category === "music" ||
+      category === "books" ||
+      category === "software"
     ) {
       return { kind: "search", query, category, timeoutMs };
     }
@@ -197,7 +200,7 @@ usage
   torlnk "magnet:?xt=..."     start a download on launch
   torlnk path/to/file.torrent open a .torrent file on launch
   torlnk search <query>        headless: print search results as JSON
-    [--category games|movies|tv|anime] [--timeout <dur>]
+    [--category games|movies|tv|anime|music|books|software] [--timeout <dur>]
   torlnk seed <path>          headless: share files you already have
   torlnk watch <dir>          headless: download torrents dropped into <dir>
   torlnk serve                headless: HTTP add API (POST /add) on :9161
